@@ -1,6 +1,16 @@
 use std::process::Command;
+use std::fs::File;
+use std::io::Read;
 
 extern crate chrono;
+
+fn cpu() -> String {
+    let mut s = String::new();
+    File::open("/proc/loadavg").unwrap().read_to_string(&mut s).unwrap();
+	s.truncate(4); // We only want the current cpu time
+	let load: f32 = s.parse().unwrap();
+	format!("{}%", 100. * load)
+}
 
 fn date() -> String {
     // 2016-10-25 00:30
@@ -8,9 +18,10 @@ fn date() -> String {
 }
 
 fn main() {
+    let status = format!("{} | {}", cpu(), date());
     Command::new("xsetroot")
 			.arg("-name")
-			.arg(date())
+			.arg(status)
 			.spawn()
 			.expect("Failed to run command");
 }
