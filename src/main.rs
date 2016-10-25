@@ -9,8 +9,7 @@ extern crate num_cpus;
 
 fn cpu() -> String {
     let mut s = String::new();
-    File::open("/proc/loadavg").unwrap().read_to_string(&mut s).unwrap();
-    s.truncate(4); // We only want the current cpu time
+    File::open("/proc/loadavg").unwrap().by_ref().take(4).read_to_string(&mut s).unwrap();
     let load: f32 = s.parse().unwrap();
     format!("⚙ {}%", (100. * load) as usize / num_cpus::get())
 }
