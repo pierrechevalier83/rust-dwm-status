@@ -1,17 +1,15 @@
 use std::process::Command;
-use std::fs::File;
-use std::io::Read;
 use std::time::Duration;
 use std::thread;
 
 extern crate chrono;
-extern crate num_cpus;
+extern crate systemstat;
 
-fn cpu() -> String {
-    let mut s = String::new();
-    File::open("/proc/loadavg").unwrap().by_ref().take(4).read_to_string(&mut s).unwrap();
-    let load: f32 = s.parse().unwrap();
-    format!("⚙ {}%", (100. * load) as usize / num_cpus::get())
+use systemstat::{Platform, System};
+
+fn cpu(sys: &System) -> String {
+	let load = sys.load_average().unwrap().one;
+	format!("⚙ {}%", load)
 }
 
 fn date() -> String {
@@ -19,8 +17,8 @@ fn date() -> String {
     chrono::Local::now().format("%F %R").to_string()
 }
 
-fn update_status() {
-    let status = format!("{} | {}", cpu(), date());
+fn update_status(sys: &System) {
+    let status = format!("{} | {}", cpu(sys), date());
     Command::new("xsetroot")
         .arg("-name")
         .arg(status)
@@ -29,8 +27,9 @@ fn update_status() {
 }
 
 fn main() {
+    let sys = System::new();
     loop {
-        update_status();
+        update_status(&sys);
         thread::sleep(Duration::new(1, 0)); // second
     }
 }

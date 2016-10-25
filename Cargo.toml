@@ -5,4 +5,4 @@ authors = ["Pierre Chevalier <pierrechevalier83@gmail.com>"]
 
 [dependencies]
 chrono = "*"
-num_cpus = "*"
+systemstat = "*"
