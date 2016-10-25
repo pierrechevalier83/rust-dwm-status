@@ -7,9 +7,20 @@ extern crate systemstat;
 
 use systemstat::{Platform, System};
 
+fn battery(sys: &System) -> String {
+	if let Ok(bat) = sys.battery_life() {
+        format!("bat {}%", bat.remaining_capacity * 100.)
+	} else {
+	    format!("bat _")
+	}
+}
+
 fn cpu(sys: &System) -> String {
-	let load = sys.load_average().unwrap().one;
-	format!("⚙ {}%", load)
+	if let Ok(load) = sys.load_average() {
+	    format!("⚙ {}%", load.one)
+	} else {
+	    format!("⚙ _")
+	}
 }
 
 fn date() -> String {
@@ -18,7 +29,7 @@ fn date() -> String {
 }
 
 fn update_status(sys: &System) {
-    let status = format!("{} | {}", cpu(sys), date());
+    let status = format!("{} | {} | {}", battery(sys), cpu(sys), date());
     Command::new("xsetroot")
         .arg("-name")
         .arg(status)
