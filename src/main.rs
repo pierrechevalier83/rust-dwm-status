@@ -12,7 +12,7 @@ fn cpu() -> String {
     File::open("/proc/loadavg").unwrap().read_to_string(&mut s).unwrap();
     s.truncate(4); // We only want the current cpu time
     let load: f32 = s.parse().unwrap();
-    format!("{}%", (100. * load) as usize / num_cpus::get())
+    format!("⚙ {}%", (100. * load) as usize / num_cpus::get())
 }
 
 fn date() -> String {
