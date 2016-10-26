@@ -9,7 +9,7 @@ use systemstat::{Platform, System};
 
 fn battery(sys: &System) -> String {
 	if let Ok(bat) = sys.battery_life() {
-        format!("bat {}%", bat.remaining_capacity * 100.)
+        format!("bat {:.1}%", bat.remaining_capacity * 100.)
 	} else {
 	    format!("bat _")
 	}
@@ -17,7 +17,7 @@ fn battery(sys: &System) -> String {
 
 fn cpu(sys: &System) -> String {
 	if let Ok(load) = sys.load_average() {
-	    format!("⚙ {}%", load.one)
+	    format!("⚙ {:.2}%", load.one)
 	} else {
 	    format!("⚙ _")
 	}
