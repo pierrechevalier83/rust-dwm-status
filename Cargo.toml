@@ -5,4 +5,4 @@ authors = ["Pierre Chevalier <pierrechevalier83@gmail.com>"]
 
 [dependencies]
 chrono = "*"
-systemstat = "*"
+systemstat = { git = "https://github.com/pierrechevalier83/systemstat.git" }
