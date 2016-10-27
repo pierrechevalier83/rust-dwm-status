@@ -9,9 +9,9 @@ use systemstat::{Platform, System};
 
 fn battery(sys: &System) -> String {
 	if let Ok(bat) = sys.battery_life() {
-        format!("bat {:.1}%", bat.remaining_capacity * 100.)
+        format!("🔋 {:.1}%", bat.remaining_capacity * 100.)
 	} else {
-	    format!("bat _")
+	    format!("🔋 _")
 	}
 }
 
