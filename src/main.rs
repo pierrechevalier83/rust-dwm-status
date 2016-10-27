@@ -25,11 +25,11 @@ fn cpu(sys: &System) -> String {
 
 fn date() -> String {
     // 2016-10-25 00:30
-    chrono::Local::now().format("%F %R").to_string()
+    chrono::Local::now().format("📆 %F  🕓 %R").to_string()
 }
 
 fn update_status(sys: &System) {
-    let status = format!("{} | {} | {}", battery(sys), cpu(sys), date());
+    let status = format!("{}  {}  {}", battery(sys), cpu(sys), date());
     Command::new("xsetroot")
         .arg("-name")
         .arg(status)
