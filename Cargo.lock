@@ -124,7 +124,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "systemstat"
 version = "0.1.0"
-source = "git+https://github.com/pierrechevalier83/systemstat.git#143c758886d77ab0db0f775a835a69ebe605c546"
+source = "git+https://github.com/pierrechevalier83/systemstat.git#926d9647e65d1b911989db5c6dd63b4b6370064f"
 dependencies = [
  "bytesize 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "chrono 0.2.25 (registry+https://github.com/rust-lang/crates.io-index)",
