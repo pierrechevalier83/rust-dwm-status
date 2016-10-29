@@ -46,7 +46,6 @@ fn cpu(sys: &System) -> String {
 }
 
 fn date() -> String {
-    // 2016-10-25 00:30
     chrono::Local::now().format("📆 %a, %d %h ⸱ 🕓 %R").to_string()
 }
 
