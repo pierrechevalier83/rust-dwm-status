@@ -2,9 +2,14 @@ use std::process::Command;
 use std::time::Duration;
 use std::thread;
 
+#[macro_use]
+extern crate chan;
+extern crate chan_signal;
+
 extern crate chrono;
 extern crate systemstat;
 
+use chan_signal::Signal;
 use systemstat::{Platform, System};
 
 fn plugged(sys: &System) -> String {
@@ -49,8 +54,11 @@ fn date() -> String {
     chrono::Local::now().format("📆 %a, %d %h ⸱ 🕓 %R").to_string()
 }
 
-fn update_status(sys: &System) {
-    let status = format!("{} ⸱ {} ⸱ {} ⸱ {} ⸱ {}", plugged(sys), battery(sys), ram(sys), cpu(sys), date());
+fn status(sys: &System) -> String {
+    format!("{} ⸱ {} ⸱ {} ⸱ {} ⸱ {}", plugged(sys), battery(sys), ram(sys), cpu(sys), date())
+}
+
+fn update_status(status: &String) {
     Command::new("xsetroot")
         .arg("-name")
         .arg(status)
@@ -58,10 +66,30 @@ fn update_status(sys: &System) {
         .expect("Failed to run command");
 }
 
-fn main() {
+fn run(_sdone: chan::Sender<()>) {
     let sys = System::new();
     loop {
-        update_status(&sys);
+        update_status(&status(&sys));
         thread::sleep(Duration::new(1, 0)); // second
     }
 }
+
+fn main() {
+    // Signal gets a value when the OS sent a INT or TERM signal.
+    let signal = chan_signal::notify(&[Signal::INT, Signal::TERM]);
+    // When our work is complete, send a sentinel value on `sdone`.
+    let (sdone, rdone) = chan::sync(0);
+    // Run work.
+    ::std::thread::spawn(move || run(sdone));
+
+    // Wait for a signal or for work to be done.
+    chan_select! {
+        signal.recv() -> signal => {
+            update_status(&format!("rust-dwm-status stopped with signal {:?}.", signal));
+        },
+        rdone.recv() => {
+            update_status(&"rust-dwm-status: done.".to_string());
+        }
+    }
+}
+
