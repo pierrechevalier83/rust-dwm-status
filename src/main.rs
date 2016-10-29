@@ -27,6 +27,16 @@ fn battery(sys: &System) -> String {
 	}
 }
 
+fn ram(sys: &System) -> String {
+    if let Ok(mem) = sys.memory() {
+	    let pmem = mem.platform_memory;
+		let used = pmem.total - pmem.free - pmem.buffer - pmem.shared;
+		format!("▯ {}", used)
+	} else {
+	    format!("▯ _")
+    }
+}
+
 fn cpu(sys: &System) -> String {
 	if let Ok(load) = sys.load_average() {
 	    format!("⚙ {:.2}%", load.one)
@@ -37,11 +47,11 @@ fn cpu(sys: &System) -> String {
 
 fn date() -> String {
     // 2016-10-25 00:30
-    chrono::Local::now().format("📆 %F ⸱ 🕓 %R").to_string()
+    chrono::Local::now().format("📆 %a, %d %h ⸱ 🕓 %R").to_string()
 }
 
 fn update_status(sys: &System) {
-    let status = format!("{} ⸱ {} ⸱ {} ⸱ {}", plugged(sys), battery(sys), cpu(sys), date());
+    let status = format!("{} ⸱ {} ⸱ {} ⸱ {} ⸱ {}", plugged(sys), battery(sys), ram(sys), cpu(sys), date());
     Command::new("xsetroot")
         .arg("-name")
         .arg(status)
