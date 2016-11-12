@@ -70,7 +70,7 @@ fn run(_sdone: chan::Sender<()>) {
     let sys = System::new();
     loop {
         update_status(&status(&sys));
-        thread::sleep(Duration::new(1, 0)); // second
+        thread::sleep(Duration::new(10, 0)); // seconds
     }
 }
 
