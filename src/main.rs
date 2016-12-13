@@ -44,7 +44,7 @@ fn ram(sys: &System) -> String {
 
 fn cpu(sys: &System) -> String {
 	if let Ok(load) = sys.load_average() {
-	    format!("⚙ {:.2}%", load.one)
+	    format!("⚙ {:.2}", load.one)
 	} else {
 	    format!("⚙ _")
 	}
