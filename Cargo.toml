@@ -1,10 +1,12 @@
 [package]
 name = "rust-dwm-status"
+description = "A status bar for tiling window managers with pretty unicode symbols written in rust"
 version = "0.1.0"
 authors = ["Pierre Chevalier <pierrechevalier83@gmail.com>"]
+license = "MIT"
 
 [dependencies]
-chan = "*"
-chan-signal = "*"
-chrono = "*"
-systemstat = { git = "https://github.com/pierrechevalier83/systemstat.git" }
+chan = "0.1.19"
+chan-signal = "0.2.0"
+chrono = "0.3.0"
+systemstat = "0.1.0"
