@@ -59,11 +59,10 @@ fn status(sys: &System) -> String {
 }
 
 fn update_status(status: &String) {
-    Command::new("xsetroot")
+    let _ = Command::new("xsetroot")
         .arg("-name")
         .arg(status)
-        .spawn()
-        .expect("Failed to run command");
+		.spawn(); // Don't panic if we fail! We'll do better next time!
 }
 
 fn run(_sdone: chan::Sender<()>) {
