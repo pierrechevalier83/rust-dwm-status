@@ -1,0 +1,3 @@
+[submodule "aur/rust-dwm-status"]
+	path = aur/rust-dwm-status
+	url = ssh://aur@aur.archlinux.org/rust-dwm-status.git
