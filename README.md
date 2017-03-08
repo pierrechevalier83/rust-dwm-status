@@ -5,8 +5,7 @@ A status bar for dwm.
 - Freely inspired from [gods](https://github.com/schachmat/gods).
 - We use [systemstat](https://github.com/myfreeweb/systemstat) for obtaining necessary infro from linux system files.
 
-![alt tag](https://github.com/pierrechevalier83/rust-dwm-statu/blob/master/screenshots/demo.png)
-
+![alt tag](https://github.com/pierrechevalier83/rust-dwm-status/blob/master/screenshots/demo.png)
 
 Dependencies
 ------------
