@@ -9,5 +9,4 @@ license = "MIT"
 chan = "0.1.19"
 chan-signal = "0.2.0"
 chrono = "0.3.0"
-systemstat = { git = "https://github.com/myfreeweb/systemstat.git" }
-#systemstat = "0.1.0"
+systemstat = "0.1.1"
