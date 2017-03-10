@@ -15,9 +15,9 @@ use systemstat::{Platform, System};
 fn plugged(sys: &System) -> String {
     if let Ok(plugged) = sys.on_ac_power() {
         if plugged {
-		    format!("{}","🔌 ✓")
+		    "🔌 ✓".to_string()
 		} else {
-		    format!("{}","🔌 ✘")
+		    "🔌 ✘".to_string()
 		}
 	} else {
 		"🔌".to_string()
@@ -38,7 +38,7 @@ fn ram(sys: &System) -> String {
 		let used = pmem.total - pmem.free - pmem.buffer - pmem.shared;
 		format!("▯ {}", used)
 	} else {
-	    format!("▯ _")
+	    "▯ _".to_string()
     }
 }
 
@@ -46,7 +46,7 @@ fn cpu(sys: &System) -> String {
 	if let Ok(load) = sys.load_average() {
 	    format!("⚙ {:.2}", load.one)
 	} else {
-	    format!("⚙ _")
+	    "⚙ _".to_string()
 	}
 }
 
