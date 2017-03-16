@@ -54,8 +54,16 @@ fn date() -> String {
     chrono::Local::now().format("📆 %a, %d %h ⸱ 🕓 %R").to_string()
 }
 
+fn separated(s: String) -> String {
+    if s == "" {
+	    s
+	} else {
+	    s + " ⸱ "
+	}
+}
+
 fn status(sys: &System) -> String {
-    format!("{} ⸱ {} ⸱ {} ⸱ {} ⸱ {}", plugged(sys), battery(sys), ram(sys), cpu(sys), date())
+	separated(plugged(sys)) + &separated(battery(sys)) + &separated(ram(sys)) + &separated(cpu(sys)) + &date()
 }
 
 fn update_status(status: &String) {
