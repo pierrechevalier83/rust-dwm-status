@@ -15,39 +15,39 @@ use systemstat::{Platform, System};
 fn plugged(sys: &System) -> String {
     if let Ok(plugged) = sys.on_ac_power() {
         if plugged {
-		    "🔌 ✓".to_string()
-		} else {
-		    "🔌 ✘".to_string()
-		}
-	} else {
-		"🔌".to_string()
-	}
+            "🔌 ✓".to_string()
+        } else {
+            "🔌 ✘".to_string()
+        }
+    } else {
+        "🔌".to_string()
+    }
 }
 
 fn battery(sys: &System) -> String {
-	if let Ok(bat) = sys.battery_life() {
+    if let Ok(bat) = sys.battery_life() {
         format!("🔋 {:.1}%", bat.remaining_capacity * 100.)
-	} else {
-	    "".to_string()
-	}
+    } else {
+        "".to_string()
+    }
 }
 
 fn ram(sys: &System) -> String {
     if let Ok(mem) = sys.memory() {
-	    let pmem = mem.platform_memory;
-		let used = pmem.total - pmem.free - pmem.buffer - pmem.shared;
-		format!("▯ {}", used)
-	} else {
-	    "▯ _".to_string()
+        let pmem = mem.platform_memory;
+        let used = pmem.total - pmem.free - pmem.buffer - pmem.shared;
+        format!("▯ {}", used)
+    } else {
+        "▯ _".to_string()
     }
 }
 
 fn cpu(sys: &System) -> String {
-	if let Ok(load) = sys.load_average() {
-	    format!("⚙ {:.2}", load.one)
-	} else {
-	    "⚙ _".to_string()
-	}
+    if let Ok(load) = sys.load_average() {
+        format!("⚙ {:.2}", load.one)
+    } else {
+        "⚙ _".to_string()
+    }
 }
 
 fn date() -> String {
@@ -55,22 +55,16 @@ fn date() -> String {
 }
 
 fn separated(s: String) -> String {
-    if s == "" {
-	    s
-	} else {
-	    s + " ⸱ "
-	}
+    if s == "" { s } else { s + " ⸱ " }
 }
 
 fn status(sys: &System) -> String {
-	separated(plugged(sys)) + &separated(battery(sys)) + &separated(ram(sys)) + &separated(cpu(sys)) + &date()
+    separated(plugged(sys)) + &separated(battery(sys)) + &separated(ram(sys)) +
+    &separated(cpu(sys)) + &date()
 }
 
 fn update_status(status: &String) {
-    let _ = Command::new("xsetroot")
-        .arg("-name")
-        .arg(status)
-		.spawn(); // Don't panic if we fail! We'll do better next time!
+    let _ = Command::new("xsetroot").arg("-name").arg(status).spawn(); // Don't panic if we fail! We'll do better next time!
 }
 
 fn run(_sdone: chan::Sender<()>) {
@@ -99,4 +93,3 @@ fn main() {
         }
     }
 }
-
