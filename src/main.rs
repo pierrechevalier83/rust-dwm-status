@@ -78,14 +78,20 @@ fn run(_sdone: chan::Sender<()>) {
     std::thread::spawn(move || {
                            server.start(|notification| sender.send(notification.clone()).unwrap())
                        });
+    let mut banner = status(&sys);
     loop {
         let received = receiver.try_recv();
         if received.is_ok() {
             let notification = received.unwrap();
-            update_status(&format!("{:#?}", notification.summary));
+            banner = format!("{:#?}", notification.summary);
+            update_status(&banner);
             thread::sleep(Duration::from_millis(notification.timeout as u64));
         }
-        update_status(&status(&sys));
+        let next_banner = status(&sys);
+        if next_banner != banner {
+            banner = next_banner;
+            update_status(&banner);
+        }
         thread::sleep(Duration::new(1, 0)); // seconds
     }
 }
