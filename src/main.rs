@@ -85,7 +85,12 @@ fn run(_sdone: chan::Sender<()>) {
             let notification = received.unwrap();
             banner = format!("{:#?}", notification.summary);
             update_status(&banner);
-            thread::sleep(Duration::from_millis(notification.timeout as u64));
+            let max_timeout = 60_000; // milliseconds (1 minute)
+            let mut t = notification.timeout;
+            if t > max_timeout || t < 0 {
+                t = max_timeout;
+            }
+            thread::sleep(Duration::from_millis(t as u64));
         }
         let next_banner = status(&sys);
         if next_banner != banner {
