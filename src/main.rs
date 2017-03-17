@@ -78,7 +78,7 @@ fn run(_sdone: chan::Sender<()>) {
     std::thread::spawn(move || {
                            server.start(|notification| sender.send(notification.clone()).unwrap())
                        });
-    let mut banner = status(&sys);
+    let mut banner = String::new();
     loop {
         let received = receiver.try_recv();
         if received.is_ok() {
