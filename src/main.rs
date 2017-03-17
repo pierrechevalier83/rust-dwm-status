@@ -92,7 +92,7 @@ fn run(_sdone: chan::Sender<()>) {
             banner = next_banner;
             update_status(&banner);
         }
-        thread::sleep(Duration::new(1, 0)); // seconds
+        thread::sleep(Duration::from_millis(500));
     }
 }
 
