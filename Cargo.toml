@@ -1,7 +1,7 @@
 [package]
 name = "rust-dwm-status"
 description = "A status bar for tiling window managers with pretty unicode symbols written in rust"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Pierre Chevalier <pierrechevalier83@gmail.com>"]
 license = "MIT"
 
@@ -9,4 +9,5 @@ license = "MIT"
 chan = "0.1.19"
 chan-signal = "0.2.0"
 chrono = "0.3.0"
+notify-rust = "3.2.1"
 systemstat = "0.1.1"

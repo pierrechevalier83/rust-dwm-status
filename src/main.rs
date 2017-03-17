@@ -7,6 +7,7 @@ extern crate chan;
 extern crate chan_signal;
 
 extern crate chrono;
+extern crate notify_rust;
 extern crate systemstat;
 
 use chan_signal::Signal;
@@ -64,14 +65,28 @@ fn status(sys: &System) -> String {
 }
 
 fn update_status(status: &String) {
-    let _ = Command::new("xsetroot").arg("-name").arg(status).spawn(); // Don't panic if we fail! We'll do better next time!
+    // Don't panic if we fail! We'll do better next time!
+    let _ = Command::new("xsetroot").arg("-name").arg(status).spawn();
 }
 
 fn run(_sdone: chan::Sender<()>) {
+    use notify_rust::server::NotificationServer;
+    let mut server = NotificationServer::new();
     let sys = System::new();
+
+    let (sender, receiver) = std::sync::mpsc::channel();
+    std::thread::spawn(move || {
+                           server.start(|notification| sender.send(notification.clone()).unwrap())
+                       });
     loop {
+        let received = receiver.try_recv();
+        if received.is_ok() {
+            let notification = received.unwrap();
+            update_status(&format!("{:#?}", notification.summary));
+            thread::sleep(Duration::from_millis(notification.timeout as u64));
+        }
         update_status(&status(&sys));
-        thread::sleep(Duration::new(10, 0)); // seconds
+        thread::sleep(Duration::new(1, 0)); // seconds
     }
 }
 
@@ -81,7 +96,7 @@ fn main() {
     // When our work is complete, send a sentinel value on `sdone`.
     let (sdone, rdone) = chan::sync(0);
     // Run work.
-    ::std::thread::spawn(move || run(sdone));
+    std::thread::spawn(move || run(sdone));
 
     // Wait for a signal or for work to be done.
     chan_select! {
