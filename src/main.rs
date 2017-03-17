@@ -66,7 +66,7 @@ fn status(sys: &System) -> String {
 
 fn update_status(status: &String) {
     // Don't panic if we fail! We'll do better next time!
-    let _ = Command::new("xsetroot").arg("-name").arg(status).spawn();
+    let _ = Command::new("xsetroot").arg("-name").arg(status).output();
 }
 
 fn run(_sdone: chan::Sender<()>) {
