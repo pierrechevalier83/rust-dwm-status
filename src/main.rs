@@ -83,7 +83,7 @@ fn run(_sdone: chan::Sender<()>) {
         let received = receiver.try_recv();
         if received.is_ok() {
             let notification = received.unwrap();
-            banner = format!("{:#?}", notification.summary);
+            banner = format!("{} {}", notification.summary, notification.body);
             update_status(&banner);
             let max_timeout = 60_000; // milliseconds (1 minute)
             let mut t = notification.timeout;
