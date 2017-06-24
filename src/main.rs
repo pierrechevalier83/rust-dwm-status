@@ -85,7 +85,7 @@ fn run(_sdone: chan::Sender<()>) {
             banner = format!("{} {}", notification.summary, notification.body);
             update_status(&banner);
             let max_timeout = 60_000; // milliseconds (1 minute)
-            let mut t = notification.timeout;
+            let mut t = notification.timeout.into();
             if t > max_timeout || t < 0 {
                 t = max_timeout;
             }
