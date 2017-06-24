@@ -35,8 +35,7 @@ fn battery(sys: &System) -> String {
 
 fn ram(sys: &System) -> String {
     if let Ok(mem) = sys.memory() {
-        let pmem = mem.platform_memory;
-        let used = pmem.total - pmem.free - pmem.buffer - pmem.shared;
+        let used = mem.total - mem.free;
         format!("▯ {}", used)
     } else {
         "▯ _".to_string()
